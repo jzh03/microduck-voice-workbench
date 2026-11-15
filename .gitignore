@@ -2,7 +2,22 @@
 /.local/
 /build/
 /docs/board/
-/.env
-/.env.*
-!/.env.example
 /板端材料
+
+# Local environment files and Python caches
+.env
+.env.*
+!.env.example
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Files generated when configuring or running the hardware workbench
+/MicroDuck 工作台前后端/outputs/
+/MicroDuck 工作台前后端/walking-runtime/workbench-config.json
+/MicroDuck 工作台前后端/walking-runtime/bridge-deployment.json
+/MicroDuck 工作台前后端/walking-runtime/standing-reference.json
+/MicroDuck 工作台前后端/walking-runtime/manual-standing-reference.json
+/MicroDuck 工作台前后端/local-joint-viewer/software-zero-reference.json
+/MicroDuck 工作台前后端/local-joint-viewer/runtime-joint-limits.json
