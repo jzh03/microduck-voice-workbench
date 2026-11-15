@@ -1,0 +1,4 @@
+interface:
+  display_name: "小鸭子代码更新"
+  short_description: "连接 Radxa 小鸭子，部署并验证板载程序、桥接代码和原生 HOME"
+  default_prompt: "用 $microduck-code-update 更新小鸭子板上的代码并校验部署结果。"

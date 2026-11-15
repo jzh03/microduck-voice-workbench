@@ -1,0 +1,4 @@
+viser==1.0.30
+numpy==2.4.1
+trimesh==4.11.1
+psutil==7.2.2; sys_platform == "win32"

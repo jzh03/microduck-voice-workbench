@@ -1,0 +1,34 @@
+# Official robotd 0.17.9 and policy set v8.
+# Select the official alpha_stand expert at zero speed; retain velstand for walking.
+[board]
+version = "zero3"
+[bus]
+port = "/dev/microduck-calibration-required"
+fast_sync_read = false
+[control]
+hz = 50
+[policy]
+enabled = true
+mode = "walk"
+# Operator-requested P200 get-up trial: 200 * 1.0 = P200; D remains zero.
+standing_gain_ratio = 1.0
+walk = "/opt/robot/policies/current/velstand.onnx"
+stand = "/opt/robot/policies/current/alpha_stand.onnx"
+sitstand = "/opt/robot/policies/current/alpha_sitstand.onnx"
+ground_pick = "none"
+kick_left = "none"
+kick_right = "none"
+roulade = "none"
+[audio]
+enabled = false
+[pickup]
+enabled = false
+[head_imu]
+enabled = false
+[idle]
+enabled = false
+[safety]
+battery_empty_shutdown = false
+# Ground recovery is already an intentional get-up. The live trace showed the
+# fall predictor interrupting the rise at 52 degrees (gain 200 -> 50).
+limp_fall = false

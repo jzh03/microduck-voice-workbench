@@ -1,0 +1,75 @@
+--- a/run_teleop.py
++++ b/run_teleop.py
+@@ -18,6 +18,7 @@
+ from policy_coordinates import CONTRACT, HOME
+ from run_bridge import rpc, ORT
+ from teleop_state import TeleopState
++from voice_control import VoiceControl
+ from stance_reference import StanceReference, PolicyReferenceHardware, ready_for_handoff
+ from handoff_pose import HandoffPose, PreparedPoseHardware, gravity_angles as gravity_angles_for_preparation
+ from flight_recorder import FlightRecorder,emit
+@@ -70,6 +71,7 @@
+         self.native_time=0.
+         self.last_native_recovery=None
+         self.samples=deque(maxlen=1200)
++        self.voice=VoiceControl(self.commands,lambda event, **fields: emit(self.trace,event,**fields))
+         self.report={'mode':args.mode,'success':False,'independent_standing_confirmed_by_operator':False,
+                      'walking_observed':False,'nonzero_command_updates':0}
+ 
+@@ -143,6 +145,7 @@
+                  policy_sha256=CONTRACT['policy_sha256'],profile_sha256=hashlib.sha256((LOCAL/'software-zero-reference.json').read_bytes()).hexdigest(),
+                  supported_direct_handoff=bool(getattr(args,'supported_direct_handoff',False)))
+             self.report['profile_sha256']=verify_files(args.certificate,physical=args.mode=='live')
++            self.voice.open(getattr(args,'voice_socket',None))
+             reference=None
+             if getattr(args,'reference',None):
+                 reference=StanceReference.load(args.reference,self.report['profile_sha256'],
+@@ -222,6 +225,7 @@
+             bridge_started=None
+             started=time.monotonic();last_health=0.;healthy_since=None;unhealthy_since=None
+             health={};last_sample=0.;last_pitch=0.;last_pose=None
++            send_rpc=lambda method, params=None: rpc(socket_path,method,params)
+             while not self.commands.abort_reason():
+                 now=time.monotonic()
+                 if daemon.poll() is not None:
+@@ -246,8 +250,14 @@
+                         self.report['supported_retry_count']=self.report.get('supported_retry_count',0)+1
+                 with self.lock:native=self.native
+                 recovering=self.observe_native_recovery(native)
+-                command=self.commands.command()
+-                rpc(socket_path,'robot.move',dict(zip(('vx','vy','vyaw'),command)))
++                if self.voice.listener is None:
++                    command=self.commands.command()
++                    rpc(socket_path,'robot.move',dict(zip(('vx','vy','vyaw'),command)))
++                else:
++                    voice_ready=(policy_enabled and now-self.native_time<=.3 and
++                                 health.get('healthy') is True and
++                                 (native or {}).get('policy') in ('walk','stand'))
++                    command=self.voice.send_command(send_rpc,voice_ready)
+                 pose=self.commands.pose()
+                 if pose!=last_pose:
+                     pose_result=rpc(socket_path,'robot.pose',pose)
+@@ -389,6 +399,7 @@
+             emit(self.trace,'session_cleanup_started',reason=self.report.get('error') or self.commands.abort_reason(),
+                  hardware_failure=hardware.failure_cause if hardware else None)
+             self.finished.set();self.commands.ready=False
++            self.voice.close()
+             self.update(phase='stopping',message='正在卸力并恢复配置；请托住机身')
+             if daemon and daemon.poll() is None:
+                 try:rpc(socket_path,'robot.move',{'vx':0,'vy':0,'vyaw':0});rpc(socket_path,'robot.relax')
+@@ -462,6 +473,7 @@
+     parser.add_argument('--output-dir',type=Path,required=True)
+     parser.add_argument('--port',type=int,default=18769)
+     parser.add_argument('--test-seconds',type=float,help='Only for fake verification')
++    parser.add_argument('--voice-socket',type=Path,help='Opt in to a root-only voice motion socket')
+     args=parser.parse_args()
+     if args.mode=='live' and (not args.supported or not args.certificate or args.test_seconds):
+         parser.error('Live requires physical support and IMU evidence; no timed torque-off')
+@@ -484,6 +496,7 @@
+                     if value.get('action') not in ('heartbeat','drive') or any(value.get(k,0) for k in ('vx','vy','vyaw')):
+                         emit(session.trace,'operator_command',command={k:v for k,v in value.items() if k in ('action','supported','vx','vy','vyaw','seconds','degrees','millimeters','sequence')})
+                     if value.get('action')=='retry_handoff':session.request_retry(value.get('supported'))
++                    elif args.voice_socket:session.voice.operator(value)
+                     else:session.commands.receive(value)
+                 elif self.path=='/close':
+                     if session.state['running']:raise ValueError('Session still running')

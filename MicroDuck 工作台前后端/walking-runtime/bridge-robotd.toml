@@ -1,0 +1,41 @@
+# Official 0.17.6 runtime + official policy set v8.
+# The stock Dynamixel backend changes homing offsets and has no software-zero
+# transform. Keep it disconnected until hardware calibration is integrated.
+# The provided --fake / read-only --sim checks do not use this device path.
+[board]
+version = "zero3"
+
+[bus]
+port = "/dev/microduck-calibration-required"
+fast_sync_read = false
+
+[control]
+hz = 50
+
+[policy]
+enabled = true
+mode = "walk"
+walk = "/opt/robot/policies/current/velstand.onnx"
+stand = "none"
+sitstand = "/opt/robot/policies/current/alpha_sitstand.onnx"
+ground_pick = "none"
+kick_left = "none"
+kick_right = "none"
+roulade = "none"
+
+[audio]
+enabled = false
+
+[pickup]
+enabled = false
+
+[head_imu]
+enabled = false
+
+[idle]
+enabled = false
+
+# The bridge enforces supply limits locally. A bench check must never power off
+# the board: RemoteIo is used for physical hardware, not a simulated battery.
+[safety]
+battery_empty_shutdown = false

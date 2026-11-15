@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "runtime_commit": "53230463927095ea890f231d29089bb0a538c06f",
+  "actuator_clamp_degrees": [
+    -180.0,
+    180.0
+  ],
+  "coordinate_frame": "saved software-zero model coordinates",
+  "physical_calibration_verified": false,
+  "sources": {
+    "research/official-microduck-runtime/kinematics/assets/alpha/robot_walk.xml": "078693dff3bcd5e69eb6cc483974178e1511a11f762b1a4dd00370bc5d58b8a8",
+    "research/official-microduck-runtime/duck-control/src/model.rs": "0d6f1c81ae18d928b309db5150e5a89ecf5c633c45eb593d0f87282355cab804",
+    "research/official-microduck-runtime/duck-control/src/safety.rs": "9f00233825613e16351383c8c36f409fd060485bbe280c08694c67a453e5d198",
+    "official-microduck-rl/src/mjlab_microduck/robot/microduck/robot_walk.xml": "80fc4424ed71e430ec4919110dfdb5c714dc1c4e1138e1832a16865cf31eb8c8"
+  },
+  "joints": {
+    "10": {
+      "name": "right_hip_yaw",
+      "label": "右髋偏航",
+      "degrees": [
+        -30.0,
+        25.0
+      ]
+    },
+    "11": {
+      "name": "right_hip_roll",
+      "label": "右髋横滚",
+      "degrees": [
+        -22.0,
+        22.0
+      ]
+    },
+    "12": {
+      "name": "right_hip_pitch",
+      "label": "右髋俯仰",
+      "degrees": [
+        -90.0,
+        90.0
+      ]
+    },
+    "13": {
+      "name": "right_knee",
+      "label": "右膝",
+      "degrees": [
+        -90.0,
+        90.0
+      ]
+    },
+    "14": {
+      "name": "right_ankle",
+      "label": "右踝",
+      "degrees": [
+        -90.0,
+        90.0
+      ]
+    },
+    "20": {
+      "name": "left_hip_yaw",
+      "label": "左髋偏航",
+      "degrees": [
+        -25.0,
+        30.0
+      ]
+    },
+    "21": {
+      "name": "left_hip_roll",
+      "label": "左髋横滚",
+      "degrees": [
+        -22.0,
+        22.0
+      ]
+    },
+    "22": {
+      "name": "left_hip_pitch",
+      "label": "左髋俯仰",
+      "degrees": [
+        -90.0,
+        90.0
+      ]
+    },
+    "23": {
+      "name": "left_knee",
+      "label": "左膝",
+      "degrees": [
+        -90.0,
+        90.0
+      ]
+    },
+    "24": {
+      "name": "left_ankle",
+      "label": "左踝",
+      "degrees": [
+        -90.0,
+        90.0
+      ]
+    },
+    "30": {
+      "name": "neck_pitch",
+      "label": "颈俯仰",
+      "degrees": [
+        -90.0,
+        60.0
+      ]
+    },
+    "31": {
+      "name": "head_pitch",
+      "label": "头俯仰",
+      "degrees": [
+        -90.0,
+        90.0
+      ]
+    },
+    "32": {
+      "name": "head_yaw",
+      "label": "头偏航",
+      "degrees": [
+        -170.0,
+        170.0
+      ]
+    },
+    "33": {
+      "name": "head_roll",
+      "label": "头横滚",
+      "degrees": [
+        -25.0,
+        25.0
+      ]
+    },
+    "34": {
+      "name": "mouth",
+      "label": "嘴部",
+      "degrees": [
+        -5.0,
+        30.0
+      ]
+    }
+  }
+}

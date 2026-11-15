@@ -1,0 +1,5 @@
+622adc73f8b299b3be3818d6d824c3d2a96b4f9c6ecdc0456d34993164c5c90e  board-assets/robotd
+a6f102d9fd655782ba85bfffe18175c34621da719cffcdd673be7982a06fc254  board-assets/policies-v8/alpha_sitstand.onnx
+1569268713e40deea795dd2922dba50d3621e15a872855408b6b1b125b1c094b  board-assets/policies-v8/alpha_stand.onnx
+2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492  board-assets/policies-v8/velstand.onnx
+e15ff8b5d85afe6c144d97c6fd432254bf76a219daaf17658087d6ecb3e8f0bb  board-assets/onnxruntime-linux-aarch64-1.28.0.tgz

@@ -1,0 +1,8 @@
+/__MACOSX/
+/.local/
+/build/
+/docs/board/
+/.env
+/.env.*
+!/.env.example
+/板端材料
